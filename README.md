@@ -1,4 +1,4 @@
-# Scaffold_Structure_Virtual_Env
+
 
 # 📝 Python 项目脚手架 (Project Scaffold) 设置指南 (Git + Cloud + Virtual Env)
 
@@ -38,3 +38,62 @@ This note summarizes the steps to set up a basic, well-structured Python project
   * **`pylint` (Linting)**: 静态代码分析工具，检查代码质量和错误。 (`make lint`)
   * **`pytest` (Testing)**: 强大的测试框架，支持简单的 `assert` 语句。 (`make test`)
   * **`pytest-cov` (Coverage)**: 报告测试覆盖率。
+
+
+-----
+
+## 💻 Standard Python Project `Makefile`
+
+**Filename:** `Makefile` (No extension)
+
+**Important Note:** The commands indented under each target **must** use a **Tab** character, not spaces.
+
+```makefile
+# Define the Python interpreter to use
+PYTHON = python3
+
+# Target for installing/updating project dependencies
+install:
+	# Upgrade pip to the latest version
+	$(PYTHON) -m pip install --upgrade pip
+	# Install all packages listed in requirements.txt
+	$(PYTHON) -m pip install -r requirements.txt
+
+# Target for formatting code using Black
+format:
+	# Run Black to automatically format Python files
+	black *.py
+
+# Target for linting code using Pylint
+lint:
+	# Run Pylint, disabling unnecessary warnings (recommended for boilerplate)
+	pylint --disable=R0903,C0114,C0116 *.py
+
+# Target for running tests and coverage using Pytest
+test:
+	# Run Pytest with verbose output (-v) and coverage report (--cov)
+	$(PYTHON) -m pytest -v --cov=./ --cov-report=term-missing
+
+# Target to clean up compiled Python files
+clean:
+	find . -type f -name "*.pyc" | xargs rm -f
+	find . -type d -name "__pycache__" | xargs rm -rf
+
+# Default target: runs a sequence of development tasks
+# This is a good way to check the project health
+all: install lint test
+
+.PHONY: install format lint test clean all
+```
+
+### ⚙️ Explanation of Targets
+
+| Target | Description | Purpose |
+| :--- | :--- | :--- |
+| **`install`** | Upgrades `pip` and installs/updates all packages from **`requirements.txt`**. | Ensures all necessary dependencies are available in the virtual environment. |
+| **`format`** | Runs the **`black`** utility on all Python files. | Automatically ensures consistent code style. |
+| **`lint`** | Runs **`pylint`** for static code analysis. | Checks for potential bugs and style violations (code cleanliness). |
+| **`test`** | Runs **`pytest`** and **`pytest-cov`**. | Executes unit tests and reports code coverage. |
+| **`clean`** | Removes generated `.pyc` files and `__pycache__` directories. | Cleans the project directory of compiled artifacts. |
+| **`all`** | Runs `install`, `lint`, and `test` sequentially. | A single command to ensure the project is set up, linted, and tested. |
+
