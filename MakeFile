@@ -1,0 +1,39 @@
+
+# Define the Python interpreter to use
+PYTHON = python3
+
+# Target for installing/updating project dependencies
+install:
+	# Upgrade pip to the latest version
+	$(PYTHON) -m pip install --upgrade pip
+	# Install all packages listed in requirements.txt
+	$(PYTHON) -m pip install -r requirements.txt
+
+# Target for formatting code using Black
+format:
+	# Run Black to automatically format Python files
+	black *.py
+
+# Target for linting code using Pylint
+lint:
+	# Run Pylint, disabling unnecessary warnings (recommended for boilerplate)
+	pylint --disable=R0903,C0114,C0116 *.py
+
+# Target for running tests and coverage using Pytest
+test:
+	# Run Pytest with verbose output (-v) and coverage report (--cov)
+	$(PYTHON) -m pytest -v --cov=./ --cov-report=term-missing
+
+# Target to clean up compiled Python files
+clean:
+	find . -type f -name "*.pyc" | xargs rm -f
+	find . -type d -name "__pycache__" | xargs rm -rf
+
+# Default target: runs a sequence of development tasks
+# This is a good way to check the project health
+all: install lint test
+
+.PHONY: install format lint test clean all
+
+
+Would you like me to provide the recommended contents for the **`requirements.txt`** file to complement this Makefile?
