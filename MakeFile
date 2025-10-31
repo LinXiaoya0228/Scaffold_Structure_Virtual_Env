@@ -34,6 +34,3 @@ clean:
 all: install lint test
 
 .PHONY: install format lint test clean all
-
-
-Would you like me to provide the recommended contents for the **`requirements.txt`** file to complement this Makefile?
